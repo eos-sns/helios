@@ -3,7 +3,7 @@
 	<em>Interact with EOS database</em></br>
 
 
-<a href="https://github.com/sirfoga/helios/pulls"><img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103"></a> <a href="https://github.com/sirfoga/helios/issues"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat"></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a> <a href="https://www.python.org/download/releases/3.6.0/"><img src="https://img.shields.io/badge/Python-3.6-blue.svg"></a> <a href="https://saythanks.io/to/sirfoga"><img src="https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg" alt="Say Thanks!" /></a>
+<a href="https://github.com/eos-sns/helios/pulls"><img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103"></a> <a href="https://github.com/eos-sns/helios/issues"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat"></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a> <a href="https://www.python.org/download/releases/3.6.0/"><img src="https://img.shields.io/badge/Python-3.6-blue.svg"></a> <a href="https://saythanks.io/to/sirfoga"><img src="https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg" alt="Say Thanks!" /></a>
 </div>
 
 
@@ -24,10 +24,10 @@ $ pip install . --upgrade --force-reinstall
 
 
 ## Contributing
-[Fork](https://github.com/sirfoga/helios/fork) | Patch | Push | [Pull request](https://github.com/sirfoga/helios/pulls)
+[Fork](https://github.com/eos-sns/helios/fork) | Patch | Push | [Pull request](https://github.com/eos-sns/helios/pulls)
 
 ## Feedback
-Suggestions and improvements are [welcome](https://github.com/sirfoga/helios/issues)!
+Suggestions and improvements are [welcome](https://github.com/eos-sns/helios/issues)!
 
 
 ## Authors
