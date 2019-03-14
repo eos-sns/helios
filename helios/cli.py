@@ -1,7 +1,7 @@
 # !/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-""" Creates/updates EOS db from files """
+""" Interacts with EOS db """
 
 import argparse
 import os
