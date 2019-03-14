@@ -6,7 +6,7 @@
 import argparse
 import os
 
-from configs.configuration import Configuration
+from config.configuration import Configuration
 from logs.logger import get_custom_logger
 
 LOGGER = get_custom_logger('CLI')
