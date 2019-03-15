@@ -7,7 +7,9 @@ import argparse
 import os
 
 from config.configuration import Configuration
+from helios.core import Helios
 from logs.logger import get_custom_logger
+from models.query import MongoFilters
 
 LOGGER = get_custom_logger('CLI')
 HERE = os.path.abspath(os.path.dirname(__file__))
@@ -51,6 +53,13 @@ def main():
     config_file = parse_args(create_args())  # parse mode
 
     configuration = Configuration(config_file)  # parse config file
+    helios = Helios(configuration)
+    query = helios.builder() \
+        .withP0As(MongoFilters.LESS_THAN, 11) \
+        .withP1As(MongoFilters.GREATER_THAN, 1) \
+        .build()
+    results = query.execute()
+    print(results)
 
 
 if __name__ == '__main__':
