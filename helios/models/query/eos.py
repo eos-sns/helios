@@ -26,8 +26,8 @@ class EosQueryBuilder(CollectionMongoQueryBuilder):
     def with_p1_as(self, op, val):
         return self.with_key_as('p1', op, val)
 
-    def build(self):
-        query = EosQuery(self.params)
+    def build(self, query_class=EosQuery):
+        query = super().build(query_class=query_class)
         query.set_driver(self.driver)
 
         return query

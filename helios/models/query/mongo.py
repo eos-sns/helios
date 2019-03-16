@@ -1,21 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from enum import Enum
-
-
-class MongoFilters(Enum):
-    EQUALS = 'eq'
-    NOT_EQUALS = 'ne'
-    LESS_THAN = 'lt'
-    LESS_THAN_OR_EQUAL_TO = 'lte'
-    GREATER_THAN = 'gt'
-    GREATER_THAN_OR_EQUAL_TO = 'gte'
-    IN = 'in'
-    NOT_IN = 'nin'
-
-    @staticmethod
-    def availables():
-        return [e.value for e in MongoFilters]
+from models.mongo.config import MongoFilters
+from models.query.results import MongoResults
 
 
 class MongoQuery:
@@ -40,7 +26,8 @@ class MongoQuery:
         if driver:
             self.set_driver(driver)
 
-        return self._get_results()
+        raw = self._get_results()
+        return MongoResults(raw)
 
 
 class MongoQueryBuilder:

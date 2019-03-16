@@ -60,12 +60,15 @@ def main():
         .with_p1_as(MongoFilters.GREATER_THAN, 1) \
         .build()
     results = query.execute()
-    print(query.params)
     print(results)
 
     query = helios.with_params('p0 < 11 and p1 > 1')
     results = query.execute()
-    print(query.params)
+    print(results)
+
+    results = results \
+        .filter_by({'p0': {'>=': 2}}) \
+        .filter_by('p0 > 1 and p2 <= 9')
     print(results)
 
 
