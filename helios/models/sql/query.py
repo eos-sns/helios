@@ -2,7 +2,7 @@
 
 import re
 
-from models.mongo.config import MongoFilters
+from models.operators import ArithmeticToMongoOperators
 
 
 class SqlOperation:
@@ -20,23 +20,7 @@ class SqlOperation:
             self.val = float(self.val)
 
         self.operation = self.operation.strip()
-        self.operation = self._translate_operator(self.operation)
-
-    @staticmethod
-    def _translate_operator(op):
-        op_to_mongo = {
-            '==': MongoFilters.EQUALS,
-            '!=': MongoFilters.NOT_EQUALS,
-            '<': MongoFilters.LESS_THAN,
-            '<=': MongoFilters.LESS_THAN_OR_EQUAL_TO,
-            '>': MongoFilters.GREATER_THAN,
-            '>=': MongoFilters.GREATER_THAN_OR_EQUAL_TO,
-        }
-
-        if op in op_to_mongo:
-            return op_to_mongo[op]
-
-        return None
+        self.operation = ArithmeticToMongoOperators().get_val(self.operation)
 
     @staticmethod
     def from_raw(operation):
