@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from models.operators import ArithmeticOperators, \
-    MongoOperators
+    MongoOperators, CoupleOperators
 from models.sql.query import SqlParser
 
 
@@ -19,7 +19,7 @@ class MongoResults:
         }
         return self.filter_by_params(params, MongoOperators())
 
-    def filter_by_params(self, params, operators=ArithmeticOperators()):
+    def filter_by_params(self, params, operators=CoupleOperators()):
         """
         :param params: {} of {}. Each dict is key -> {operation -> val}
         :param operators: list of available operators
@@ -43,7 +43,7 @@ class MongoResults:
         if isinstance(arg, str):
             filtered = self.filter_by_sql(arg)
         elif isinstance(arg, dict):
-            filtered = self.filter_by_params(arg)
+            filtered = self.filter_by_params(arg, ArithmeticOperators())
         else:
             raise ValueError('Cannot filter by {}'.format(arg))
 

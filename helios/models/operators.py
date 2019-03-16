@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import abc
 
-class CoupleOperators:
-    def __init__(self, available):
+
+class CoupleOperators(abc.ABC):
+    def __init__(self, available=None):
         self.available = available
 
     def evaluate(self, operator, pair):
