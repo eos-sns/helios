@@ -12,7 +12,7 @@ DESCRIPTION = '{}: {}'.format(PACKAGE_NAME, LITTLE_DESCRIPTION)
 
 setup(
     name=PACKAGE_NAME,
-    version="1.0",
+    version="1.0.1",
     description=LITTLE_DESCRIPTION,
     long_description=DESCRIPTION,
     keywords="eos",

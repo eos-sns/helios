@@ -9,7 +9,7 @@ import os
 from config.configuration import Configuration
 from helios.core import Helios
 from logs.logger import get_custom_logger
-from models.query import MongoFilters
+from models.query.mongo import MongoFilters
 
 LOGGER = get_custom_logger('CLI')
 HERE = os.path.abspath(os.path.dirname(__file__))
@@ -53,12 +53,19 @@ def main():
     config_file = parse_args(create_args())  # parse mode
 
     configuration = Configuration(config_file)  # parse config file
+
     helios = Helios(configuration)
     query = helios.builder() \
-        .withP0As(MongoFilters.LESS_THAN, 11) \
-        .withP1As(MongoFilters.GREATER_THAN, 1) \
+        .with_p0_as(MongoFilters.LESS_THAN, 11) \
+        .with_p1_as(MongoFilters.GREATER_THAN, 1) \
         .build()
     results = query.execute()
+    print(query.params)
+    print(results)
+
+    query = helios.with_params('p0 < 11 and p1 > 1')
+    results = query.execute()
+    print(query.params)
     print(results)
 
 
