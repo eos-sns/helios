@@ -26,7 +26,9 @@ results = results \
     .filter_by('p0 > 1 and p2 <= 9')
 print(results)  # yess, now let's save and download
 
-
+results = results.get()  # get raw
+disk_path = helios.save_to_disk(results)  # saved in home folder
+download_url = helios.download(results)  # now let's download
 ```
 
 

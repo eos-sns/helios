@@ -49,5 +49,8 @@ class MongoResults:
 
         return MongoResults(filtered)
 
+    def get(self):
+        return self.results
+
     def __str__(self):
         return str(self.results)

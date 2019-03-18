@@ -29,7 +29,7 @@ class UUIDHasher(Hasher):
 
 
 class DataSaver:
-    def __init__(self, hasher, config):
+    def __init__(self, config, hasher=UUIDHasher()):
         """
         :param hasher: stuff to hash stuff
         :param config: {} with options. There MUST be a 'out folder' key
@@ -40,9 +40,16 @@ class DataSaver:
 
     def _get_output_file(self, key, extension):
         key = self.hasher.hash_key(key)
-        out_folder = self.config['out folder']
+        out_folder = self.config['folder']
         out_file = key + '.' + extension
         out_file = os.path.join(out_folder, out_file)
+
+        # create out folder if necessary
+        out_folder = os.path.dirname(out_file)
+        if not os.path.exists(out_folder):
+            os.makedirs(out_folder)
+
+        # there is already a file
         if os.path.exists(out_file):
             return None  # cannot save here
 
@@ -83,6 +90,6 @@ class AstraeusDataSaver(JsonDataSaver):
         out_file = self.store_json(data)
         astraeus = Astraeus()
         download_key = astraeus.save(out_file)  # save real path
-        root_url = self.config['out url']
+        root_url = self.config['url']
         full_url = root_url + download_key
         return full_url
