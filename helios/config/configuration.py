@@ -12,7 +12,7 @@ class Configuration:
     DEFAULT = {
         'db': {
             'name': 'eos',
-            'files collection name': 'files',
+            'files collection name': 'data',
             'server': 'localhost',
             'port': 27017
         },
