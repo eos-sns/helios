@@ -4,12 +4,13 @@
 
 from pymongo import MongoClient
 
+from helios.config.configuration import Configuration
 from helios.models.query.eos import EosQueryBuilder
 from helios.models.query.sql import SqlQueryAdapter
 
 
 class Helios:
-    def __init__(self, config):
+    def __init__(self, config=Configuration.default()):
         self.config = config
         self.client = MongoClient(
             self.config.get_db_server(),

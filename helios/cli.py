@@ -72,5 +72,20 @@ def main():
     print(results)
 
 
+def example():
+    helios = Helios()
+    query = helios.builder() \
+        .with_p0_as(MongoFilters.LESS_THAN, 11) \
+        .with_p1_as(MongoFilters.GREATER_THAN, 1) \
+        .build()
+    results = query.execute()
+    print(results)
+
+    results = results \
+        .filter_by({'p0': {'>=': 2}}) \
+        .filter_by('p0 > 1 and p2 <= 9')
+    print(results)
+
+
 if __name__ == '__main__':
     main()
