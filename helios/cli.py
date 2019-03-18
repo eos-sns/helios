@@ -6,10 +6,10 @@
 import argparse
 import os
 
-from config.configuration import Configuration
-from helios.core import Helios
-from logs.logger import get_custom_logger
-from models.query.mongo import MongoFilters
+from helios.config.configuration import Configuration
+from helios.helios.core import Helios
+from helios.logs.logger import get_custom_logger
+from helios.models.query.mongo import MongoFilters
 
 LOGGER = get_custom_logger('CLI')
 HERE = os.path.abspath(os.path.dirname(__file__))

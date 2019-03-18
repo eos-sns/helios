@@ -2,7 +2,7 @@
 
 import abc
 
-from models.mongo.config import MongoFilters
+from helios.models.mongo.config import MongoFilters
 
 
 class CoupleOperators(abc.ABC):

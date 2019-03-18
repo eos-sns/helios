@@ -2,7 +2,7 @@
 
 import re
 
-from models.operators import ArithmeticToMongoOperators
+from helios.models.operators import ArithmeticToMongoOperators
 
 
 class SqlOperation:

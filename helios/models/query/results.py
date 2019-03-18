@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from models.operators import ArithmeticOperators, \
+from helios.models.operators import ArithmeticOperators, \
     MongoOperators, CoupleOperators
-from models.sql.query import SqlParser
+from helios.models.sql.query import SqlParser
 
 
 class MongoResults:

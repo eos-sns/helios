@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from models.mongo.config import MongoFilters
-from models.query.results import MongoResults
+from helios.models.mongo.config import MongoFilters
+from helios.models.query.results import MongoResults
 
 
 class MongoQuery:

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from models.query.core import CollectionMongoQueryBuilder
-from models.query.mongo import MongoQuery
+from helios.models.query.core import CollectionMongoQueryBuilder
+from helios.models.query.mongo import MongoQuery
 
 
 class EosQuery(MongoQuery):

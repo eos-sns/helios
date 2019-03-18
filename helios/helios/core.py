@@ -4,8 +4,8 @@
 
 from pymongo import MongoClient
 
-from models.query.eos import EosQueryBuilder
-from models.query.sql import SqlQueryAdapter
+from helios.models.query.eos import EosQueryBuilder
+from helios.models.query.sql import SqlQueryAdapter
 
 
 class Helios:

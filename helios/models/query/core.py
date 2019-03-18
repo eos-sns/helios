@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from models.query.mongo import MongoQueryBuilder
+from helios.models.query.mongo import MongoQueryBuilder
 
 
 class CollectionMongoQueryBuilder(MongoQueryBuilder):

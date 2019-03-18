@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from models.query.eos import EosQuery
-from models.query.mongo import MongoQueryBuilder
-from models.sql.query import SqlParser
+from helios.models.query.eos import EosQuery
+from helios.models.query.mongo import MongoQueryBuilder
+from helios.models.sql.query import SqlParser
 
 
 class SqlQueryAdapter:
