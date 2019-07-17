@@ -6,9 +6,11 @@ import abc
 import gzip
 import json
 import os
+import tarfile
 import uuid
+from io import BytesIO
 
-from astraeus.models.astraeus import Astraeus
+from astraeus.core import Astraeus
 
 
 class Hasher:
@@ -79,17 +81,36 @@ class JsonDataSaver(DataSaver):
         json_data = json.dumps(data)
         return self.save_data(json_data)
 
-    def store_json(self, data):
+    def store_as_json(self, data):
         json_data = json.dumps(data)
         json_bytes = json_data.encode('utf-8')
         return self.store_data(json_bytes)
 
 
 class AstraeusDataSaver(JsonDataSaver):
-    def download_json(self, data):
-        out_file = self.store_json(data)
+    def get_key_for(self, val):
         astraeus = Astraeus()
-        download_key = astraeus.save(out_file)  # save real path
+        download_key = astraeus.save(val)  # save real path
         root_url = self.config['url']
         full_url = root_url + download_key
         return full_url
+
+    def download_multiple(self, lst):
+        out_file = self._get_output_file(None, 'tar.gz')  # create file
+        tar = tarfile.TarFile(out_file, 'w')  # open
+
+        for i, data in enumerate(lst):
+            buff = BytesIO()
+            buff.write(json.dumps(data).encode())
+            buff.seek(0)
+
+            file_name = '{}.json'.format(i)  # todo better name
+            info = tarfile.TarInfo(name=file_name)
+            info.size = len(buff.getbuffer())
+            tar.addfile(tarinfo=info, fileobj=buff)
+
+        tar.close()
+
+    def download_as_json(self, data):
+        out_file = self.store_as_json(data)
+        return self.get_key_for(out_file)

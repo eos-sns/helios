@@ -5,6 +5,7 @@
 from pymongo import MongoClient
 
 # todo from helios.helios.io import AstraeusDataSaver
+from helios.helios.io import AstraeusDataSaver
 from helios.models.query.eos import EosQueryBuilder
 from helios.models.query.sql import SqlQueryAdapter
 
@@ -22,7 +23,7 @@ class Helios:
         self.query_builder = self._get_query_builder()
         self.driver = self.client[self.db_name][self.collection_name]
 
-        self.saver = None  # todo AstraeusDataSaver(self.config.get_output())
+        self.saver = AstraeusDataSaver(self.config.get_output())
 
     def with_params(self, raw_sql):
         try:
@@ -40,7 +41,13 @@ class Helios:
         return self.saver.save_json(results)
 
     def download(self, results):
-        return self.saver.download_json(results)
+        try:
+            if len(results) > 1:
+                return self.saver.download_multiple(results)
+        except:
+            pass  # todo
+
+        return self.saver.download_as_json(results)
 
     def _get_query_builder(self):
         return EosQueryBuilder(

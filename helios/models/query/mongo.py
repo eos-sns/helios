@@ -69,5 +69,4 @@ class MongoQueryBuilder:
         return self
 
     def build(self, query_class=MongoQuery):
-        print(self.params)
         return query_class(self.params)

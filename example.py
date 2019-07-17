@@ -15,12 +15,15 @@ def main():
     configuration = EosConfiguration(DEFAULT_CONFIG_FILE)
     helios = Helios(configuration)
     query = helios.builder() \
-        .with_key_as('ALPHA_ESC', MongoFilters.GREATER_THAN, -0.5) \
-        .with_key_as('ALPHA_ESC', MongoFilters.LESS_THAN, -0.25) \
+        .with_key_as('ALPHA_ESC', MongoFilters.GREATER_THAN, -1.5) \
+        .with_key_as('ALPHA_ESC', MongoFilters.LESS_THAN, -0.2) \
         .build()
     results = query.execute()
     results = results.get()  # get raw
-    print(results)  # mmmh, not exaclty what I wanted, let's refine
+    print(results)  # mmmh, not exactly what I wanted, let's refine
+
+    disk_path = helios.download(results)
+    print(disk_path)
 
     # results = results \
     #     .filter_by({'p0': {'>=': 2}}) \
