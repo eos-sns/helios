@@ -40,17 +40,21 @@ class MongoQueryBuilder:
         if not params:
             params = {}
 
-        self.params = params
+        params = [
+            {key: {
+                op: val
+            } for op, val in condition.items()}
+            for key, condition in params.items()
+        ]  # dict -> list of dicts
+        self.params = {'$and': params}
 
     def set_key_as(self, key, op, val):
-        if not isinstance(op, MongoFilters):
-            raise ValueError(self.NOT_VALID_OPERATOR_FORMAT.format(op))
-
-        op = op.value  # get value from enum
-        mongo_operator = '${}'.format(op)
-        self.params[key] = {
-            mongo_operator: float(val)
-        }
+        mongo_operator = '${}'.format(op.value)  # get value from enum
+        self.params['$and'].append({
+            key: {
+                mongo_operator: val
+            }
+        })  # add condition
 
     def with_key_as(self, key, op, val):
         """
@@ -65,4 +69,5 @@ class MongoQueryBuilder:
         return self
 
     def build(self, query_class=MongoQuery):
+        print(self.params)
         return query_class(self.params)

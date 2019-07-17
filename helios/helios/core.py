@@ -4,26 +4,25 @@
 
 from pymongo import MongoClient
 
-from helios.config.configuration import Configuration
-from helios.helios.io import AstraeusDataSaver
+# todo from helios.helios.io import AstraeusDataSaver
 from helios.models.query.eos import EosQueryBuilder
 from helios.models.query.sql import SqlQueryAdapter
 
 
 class Helios:
-    def __init__(self, config=Configuration.default()):
+    def __init__(self, config):
         self.config = config
         self.client = MongoClient(
             self.config.get_db_server(),
             self.config.get_db_port()
         )
         self.db_name = self.config.get_db_name()
-        self.collection_name = self.config.get_files_collection_name()
+        self.collection_name = self.config.get_coll_name()
 
         self.query_builder = self._get_query_builder()
         self.driver = self.client[self.db_name][self.collection_name]
 
-        self.saver = AstraeusDataSaver(self.config.get_output())
+        self.saver = None  # todo AstraeusDataSaver(self.config.get_output())
 
     def with_params(self, raw_sql):
         try:
