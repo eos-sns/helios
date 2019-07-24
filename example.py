@@ -25,15 +25,6 @@ def main():
     disk_path = helios.download(results)
     print(disk_path)
 
-    # results = results \
-    #     .filter_by({'p0': {'>=': 2}}) \
-    #     .filter_by('p0 > 1 and p2 <= 9')
-    # print(results)  # yess, now let's save and download
-    #
-    # results = results.get()  # get raw
-    # disk_path = helios.save_to_disk(results)  # saved in home folder
-    # download_url = helios.download(results)  # now let's download
-
 
 if __name__ == '__main__':
     main()

@@ -40,6 +40,12 @@ class DataSaver:
         self.hasher = hasher
         self.config = config
 
+    @staticmethod
+    def get_key_for(val):
+        astraeus = Astraeus()
+        key = astraeus.save(val)  # save val
+        return key
+
     def _get_output_file(self, key, extension):
         key = self.hasher.hash_key(key)
         out_folder = self.config['folder']
@@ -88,9 +94,8 @@ class JsonDataSaver(DataSaver):
 
 
 class AstraeusDataSaver(JsonDataSaver):
-    def get_key_for(self, val):
-        astraeus = Astraeus()
-        download_key = astraeus.save(val)  # save real path
+    def get_download_key_for(self, val):
+        download_key = self.get_key_for(val)
         root_url = self.config['url']
         full_url = root_url + download_key
         return full_url
@@ -113,4 +118,4 @@ class AstraeusDataSaver(JsonDataSaver):
 
     def download_as_json(self, data):
         out_file = self.store_as_json(data)
-        return self.get_key_for(out_file)
+        return self.get_download_key_for(out_file)

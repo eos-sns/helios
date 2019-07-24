@@ -40,6 +40,9 @@ class Helios:
     def save_to_disk(self, results):
         return self.saver.save_json(results)
 
+    def get_download_link(self, val):
+        return self.saver.get_download_key_for(val)
+
     def download(self, results):
         try:
             if len(results) > 1:

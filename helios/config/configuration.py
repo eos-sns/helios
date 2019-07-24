@@ -5,7 +5,7 @@
 import abc
 import json
 
-from logs.logger import get_custom_logger
+from helios.logs.logger import get_custom_logger
 
 
 class Configuration:
