@@ -7,19 +7,7 @@ import logging
 import threading
 
 LOG_THREAD_FORMAT = 'thread-{} {}'  # when logging # threads
-LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-CUSTOM_LOG_FORMAT = '%(asctime)s - %(levelname)s - %(module)s - %(message)s'
-
-LOG_LEVEL = logging.DEBUG
-
-LOGGER = logging.getLogger('helios')
-LOGGER.setLevel(LOG_LEVEL)
-
-STREAM_HANDLER = logging.StreamHandler()
-STREAM_HANDLER.setLevel(LOG_LEVEL)
-STREAM_HANDLER.setFormatter(logging.Formatter(LOG_FORMAT))
-
-LOGGER.addHandler(STREAM_HANDLER)
+CUSTOM_LOG_FORMAT = '%(asctime)s %(levelname)s -> %(name)s: %(message)s'
 
 
 class Logger:
