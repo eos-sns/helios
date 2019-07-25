@@ -2,32 +2,13 @@
 
 """ Saves data from EOS db """
 
-import abc
 import gzip
 import json
 import os
 import tarfile
-import uuid
 from io import BytesIO
 
-from astraeus.core import Astraeus
-
-
-class Hasher:
-    """ Something that hashes something """
-
-    @abc.abstractmethod
-    def hash_key(self, key):
-        return 0
-
-
-class UUIDHasher(Hasher):
-    """ Hashing based on UUID4 """
-
-    def hash_key(self, key):
-        hashed = str(uuid.uuid4())
-        hashed = hashed.replace('-', '')
-        return hashed
+from astraeus.core import MongoAstraeus, UUIDHasher
 
 
 class DataSaver:
@@ -40,16 +21,17 @@ class DataSaver:
         self.hasher = hasher
         self.config = config
 
-    @staticmethod
-    def get_key_for(val):
-        astraeus = Astraeus()
-        key = astraeus.save(val)  # save val
+        mongo_coll = self.config["astraeus"]["collection"]
+        self.cache_saver = MongoAstraeus(mongo_coll)
+
+    def get_key_for(self, val):
+        key = self.cache_saver.save(val)  # save val
         return key
 
-    def _get_output_file(self, key, extension):
+    def _get_output_file(self, key, extension='.tar.gz'):
         key = self.hasher.hash_key(key)
         out_folder = self.config['folder']
-        out_file = key + '.' + extension
+        out_file = key + extension
         out_file = os.path.join(out_folder, out_file)
 
         # create out folder if necessary
@@ -101,7 +83,7 @@ class AstraeusDataSaver(JsonDataSaver):
         return full_url
 
     def download_multiple(self, lst):
-        out_file = self._get_output_file(None, 'tar.gz')  # create file
+        out_file = self._get_output_file(None)  # create file
         tar = tarfile.TarFile(out_file, 'w')  # open
 
         for i, data in enumerate(lst):
@@ -109,9 +91,12 @@ class AstraeusDataSaver(JsonDataSaver):
             buff.write(json.dumps(data).encode())
             buff.seek(0)
 
-            file_name = '{}.json'.format(i)  # todo better name
+            file_name = '{}.json'.format(i)
+            file_name = os.path.basename(file_name)
+
             info = tarfile.TarInfo(name=file_name)
             info.size = len(buff.getbuffer())
+
             tar.addfile(tarinfo=info, fileobj=buff)
 
         tar.close()

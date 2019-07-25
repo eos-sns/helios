@@ -71,3 +71,6 @@ class EosConfiguration(JsonConfiguration):
 
     def get_output(self):
         return self.get_config('out')
+
+    def get_tmp(self):
+        return self.get_config('tmp')

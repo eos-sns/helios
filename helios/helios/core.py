@@ -4,7 +4,6 @@
 
 from pymongo import MongoClient
 
-# todo from helios.helios.io import AstraeusDataSaver
 from helios.helios.io import AstraeusDataSaver
 from helios.models.query.eos import EosQueryBuilder
 from helios.models.query.sql import SqlQueryAdapter
@@ -47,8 +46,8 @@ class Helios:
         try:
             if len(results) > 1:
                 return self.saver.download_multiple(results)
-        except:
-            pass  # todo
+        except Exception as e:
+            print(e)  # todo logging
 
         return self.saver.download_as_json(results)
 

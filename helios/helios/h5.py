@@ -6,74 +6,86 @@ import os
 import tarfile
 
 import h5py
+from astraeus.core import UUIDHasher
+
+
+def create_if_necessary(folder):
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+
+def get_random_folder(from_folder):
+    folder_name = UUIDHasher().hash_key()  # random folder
+    out = os.path.join(from_folder, folder_name)
+    create_if_necessary(out)
+    return out
+
+
+def get_output_file(file_name, extension, from_folder):
+    create_if_necessary(from_folder)
+    return os.path.join(from_folder, file_name + extension)
 
 
 class MongoH5:
     """ .h5 saved in MongoDB """
 
-    @staticmethod
-    def _get_out_folder():
-        out = ''  # todo tmp folder where to save tmp .h5
+    def _get_out_folder(self):
+        out_folder = self.config["folder"]  # root folder out
+        return get_random_folder(out_folder)
 
-        if not os.path.exists(out):
-            os.makedirs(out)
-
-        return out
-
-    def __init__(self, mongo_doc):
+    def __init__(self, mongo_doc, config):
         self.data = mongo_doc
+        self.config = config
         self.out_folder = self._get_out_folder()
 
     def _get_path(self):
         return self.data['path']
 
     def _get_output_file(self):
-        file_name = self.data['_id']
-        folder_name = self.out_folder
-        return os.path.join(folder_name, file_name)
+        return get_output_file(
+            self.data['_id'],
+            '.json',
+            self.out_folder
+        )
 
-    def save_to_disk(self):
+    def save_to_disk(self, ):
         h5_reader = h5py.File(self._get_path(), 'r')
         data = {
-            key: h5_reader.get(key)
+            key: ''  # todo convert H5F5 dataset h5_reader.get(key)
             for key in h5_reader.keys()  # todo ask nicolas if also attrs.keys should be saved
         }
         h5_reader.close()
         file_out = self._get_output_file()
         with open(file_out, 'w') as writer:
-            json.dump(data, writer)  # todo check
+            json.dump(data, writer)
+        return file_out
 
 
 class MongoH5Collection:
     """ Multiple MongoH5 """
 
-    def __init__(self, docs):
+    def __init__(self, docs, config):
         self.docs = [
-            MongoH5(doc)
+            MongoH5(doc, config)
             for doc in docs
         ]
-        self.out_folder = self._get_out_folder()
 
     @staticmethod
-    def _get_out_folder():
-        out = ''  # todo tmp folder where to save tmp .h5
+    def _get_output_file(from_folder):
+        return get_output_file(
+            UUIDHasher().hash_key(),
+            '.tar.gz',
+            from_folder
+        )
 
-        if not os.path.exists(out):
-            os.makedirs(out)
-
-        return out
-
-    def _get_output_file(self):
-        file_name = '.tar.gz'  # todo generate random uuid
-        folder_name = self.out_folder
-        return os.path.join(folder_name, file_name)
-
-    def save_to_disk(self):
-        tf = tarfile.open(self._get_output_file(), mode="w:gz")
+    def save_to_disk(self, out_folder):
+        out_file = self._get_output_file(out_folder)
+        tf = tarfile.open(out_file, mode="w:gz")
 
         for doc in self.docs:
-            doc.save_to_disk()  # save to disk
-            tf.add(doc._get_output_file())  # add to tar
+            file_path = doc.save_to_disk()  # save to disk
+            file_name = os.path.basename(file_path)
+            tf.add(file_path, arcname=file_name)  # add to tar
 
         tf.close()
-        return self._get_output_file()
+        return out_file
