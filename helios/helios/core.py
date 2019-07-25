@@ -2,9 +2,12 @@
 
 """ Interacts with EOS db """
 
+import inspect
+
 from pymongo import MongoClient
 
 from helios.helios.io import AstraeusDataSaver
+from helios.logs.logger import Logger
 from helios.models.query.eos import EosQueryBuilder
 from helios.models.query.sql import SqlQueryAdapter
 
@@ -23,6 +26,7 @@ class Helios:
         self.driver = self.client[self.db_name][self.collection_name]
 
         self.saver = AstraeusDataSaver(self.config.get_output())
+        self.logger = Logger(self.__class__.__name__)  # unique ID + class name
 
     def with_params(self, raw_sql):
         try:
@@ -47,7 +51,8 @@ class Helios:
             if len(results) > 1:
                 return self.saver.download_multiple(results)
         except Exception as e:
-            print(e)  # todo logging
+            func_context = inspect.stack()[0]
+            self.logger.log_error(func_context, e)
 
         return self.saver.download_as_json(results)
 

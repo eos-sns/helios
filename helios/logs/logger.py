@@ -12,7 +12,7 @@ CUSTOM_LOG_FORMAT = '%(asctime)s - %(levelname)s - %(module)s - %(message)s'
 
 LOG_LEVEL = logging.DEBUG
 
-LOGGER = logging.getLogger('hyperion')
+LOGGER = logging.getLogger('helios')
 LOGGER.setLevel(LOG_LEVEL)
 
 STREAM_HANDLER = logging.StreamHandler()
