@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """ Interface to deal with .h5 files in EOS database """
-import json
 import os
+import shutil
 import tarfile
 
-import h5py
 from astraeus.core import UUIDHasher
 
 
@@ -41,23 +40,17 @@ class MongoH5:
     def _get_path(self):
         return self.data['path']
 
-    def _get_output_file(self):
+    def _get_output_file(self, extension='.h5'):
         return get_output_file(
             self.data['_id'],
-            '.json',
+            extension,
             self.out_folder
         )
 
-    def save_to_disk(self, ):
-        h5_reader = h5py.File(self._get_path(), 'r')
-        data = {
-            key: ''  # todo convert H5F5 dataset h5_reader.get(key)
-            for key in h5_reader.keys()  # todo ask nicolas if also attrs.keys should be saved
-        }
-        h5_reader.close()
+    def save_to_disk(self):
+        h5_file = self._get_path()
         file_out = self._get_output_file()
-        with open(file_out, 'w') as writer:
-            json.dump(data, writer)
+        shutil.copy(h5_file, file_out)
         return file_out
 
 

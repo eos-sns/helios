@@ -40,7 +40,3 @@ class Logger:
             text += ' due to ' + str(cause)
 
         self.logger.error(LOG_THREAD_FORMAT.format(thread_id, text))
-
-
-def get_custom_logger(logger_name):
-    return Logger(logger_name)

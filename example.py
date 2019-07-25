@@ -20,10 +20,7 @@ def main():
         .build()
     results = query.execute()
     results = results.get()  # get raw
-    print(results)  # mmmh, not exactly what I wanted, let's refine
-
     disk_path = helios.download(results)
-    print(disk_path)
 
 
 if __name__ == '__main__':

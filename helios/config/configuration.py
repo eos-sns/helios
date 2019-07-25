@@ -5,14 +5,11 @@
 import abc
 import json
 
-from helios.logs.logger import get_custom_logger
-
 
 class Configuration:
     def __init__(self, config_file):
         self.config_file = config_file
         self.data = None  # will be a dictionary when parsed
-        self.logger = get_custom_logger('CONFIGURATION')
 
     @abc.abstractmethod
     def _parse(self, reader):
