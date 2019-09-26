@@ -2,9 +2,9 @@
 
 import os
 
-from config.configuration import EosConfiguration
+from helios.config.configuration import EosConfiguration
 from helios.helios.core import Helios
-from models.mongo.config import MongoFilters
+from helios.models.mongo.config import MongoFilters
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 DEFAULT_CONFIG_FOLDER = os.path.join(HERE, 'config')
@@ -21,6 +21,7 @@ def main():
     results = query.execute()
     results = results.get()  # get raw
     disk_path = helios.download(results)
+    print(disk_path)
 
 
 if __name__ == '__main__':

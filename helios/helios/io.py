@@ -100,6 +100,7 @@ class AstraeusDataSaver(JsonDataSaver):
             tar.addfile(tarinfo=info, fileobj=buff)
 
         tar.close()
+        return self.get_download_key_for(out_file)
 
     def download_as_json(self, data):
         out_file = self.store_as_json(data)

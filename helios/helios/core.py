@@ -50,11 +50,11 @@ class Helios:
         try:
             if len(results) > 1:
                 return self.saver.download_multiple(results)
+
+            return self.saver.download_as_json(results)
         except Exception as e:
             func_context = inspect.stack()[0]
             self.logger.log_error(func_context, e)
-
-        return self.saver.download_as_json(results)
 
     def _get_query_builder(self):
         return EosQueryBuilder(
