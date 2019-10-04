@@ -14,7 +14,7 @@ def create_if_necessary(folder):
 
 
 def get_random_folder(from_folder):
-    folder_name = UUIDHasher().hash_key()  # random folder
+    folder_name = UUIDHasher().hash_key(None)  # random folder
     out = os.path.join(from_folder, folder_name)
     create_if_necessary(out)
     return out
@@ -40,9 +40,17 @@ class MongoH5:
     def _get_path(self):
         return self.data['path']
 
+    def get_co_eval_k(self):
+        # todo f.get(‘co-eval_k’)
+        return ''
+
+    def get_co_eval_PS_z(self):
+        # todo f.get(‘co-eval_PS_z’)
+        return ''
+
     def _get_output_file(self, extension='.h5'):
         return get_output_file(
-            self.data['_id'],
+            UUIDHasher().hash_key(None),
             extension,
             self.out_folder
         )
@@ -66,7 +74,7 @@ class MongoH5Collection:
     @staticmethod
     def _get_output_file(from_folder):
         return get_output_file(
-            UUIDHasher().hash_key(),
+            UUIDHasher().hash_key(None),
             '.tar.gz',
             from_folder
         )
