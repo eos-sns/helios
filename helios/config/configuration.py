@@ -45,6 +45,8 @@ class JsonConfiguration(Configuration):
 
 
 class EosConfiguration(JsonConfiguration):
+    DEFAULT_CONFIG_PATH = '/opt/eos/helios/config/config.json'
+
     def get_coll_name(self):
         return self.get_matrioska_config(['db', 'collection'])
 
@@ -71,3 +73,7 @@ class EosConfiguration(JsonConfiguration):
 
     def get_tmp(self):
         return self.get_config('tmp')
+
+    @staticmethod
+    def get_default():
+        return EosConfiguration(EosConfiguration.DEFAULT_CONFIG_PATH)
