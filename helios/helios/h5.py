@@ -58,8 +58,11 @@ class MongoH5:
 
         with h5py.File(file_out, 'w') as editor:
             for key in self.OPTIONAL_DATASET:
-                if key not in files_to_get and key in editor:
-                    del editor[key]  # remove dataset
+                if key not in files_to_get:
+                    try:
+                        del editor[key]  # remove dataset
+                    except:
+                        pass
 
         return file_out
 
