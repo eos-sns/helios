@@ -84,6 +84,7 @@ class AstraeusDataSaver(JsonDataSaver):
 
     def download_multiple(self, lst):
         out_file = self._get_output_file(None)  # create file
+        out_file = os.path.expanduser(out_file)  # expand tilde (if necessary)
         tar = tarfile.TarFile(out_file, 'w')  # open
 
         for i, data in enumerate(lst):
