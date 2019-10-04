@@ -47,7 +47,7 @@ class DataSaver:
         return out_file
 
     def save_data(self, data):
-        out_file = self._get_output_file(None, 'data')
+        out_file = self._get_output_file(None, extension='.json')
         with open(out_file, 'w') as writer:
             writer.write(data)
 

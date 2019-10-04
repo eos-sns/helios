@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
 """ Interface to deal with .h5 files in EOS database """
+
 import os
 import shutil
 import tarfile
 
+import h5py
 from astraeus.core import UUIDHasher
 
 
@@ -40,14 +42,6 @@ class MongoH5:
     def _get_path(self):
         return self.data['path']
 
-    def get_co_eval_k(self):
-        # todo f.get(‘co-eval_k’)
-        return ''
-
-    def get_co_eval_PS_z(self):
-        # todo f.get(‘co-eval_PS_z’)
-        return ''
-
     def _get_output_file(self, extension='.h5'):
         return get_output_file(
             UUIDHasher().hash_key(None),
@@ -55,10 +49,18 @@ class MongoH5:
             self.out_folder
         )
 
-    def save_to_disk(self):
+    def save_to_disk(self, files_to_get):
         h5_file = self._get_path()
         file_out = self._get_output_file()
         shutil.copy(h5_file, file_out)
+
+        with h5py.File(file_out, 'w') as editor:
+            if 'co-eval_k' not in files_to_get:
+                del editor['co-eval_k']  # remove dataset
+
+            if 'co-eval_PS_z' not in files_to_get:
+                del editor['co-eval_PS_z']
+
         return file_out
 
 
@@ -79,12 +81,12 @@ class MongoH5Collection:
             from_folder
         )
 
-    def save_to_disk(self, out_folder):
+    def save_to_disk(self, out_folder, files_to_get):
         out_file = self._get_output_file(out_folder)
         tf = tarfile.open(out_file, mode="w:gz")
 
         for doc in self.docs:
-            file_path = doc.save_to_disk()  # save to disk
+            file_path = doc.save_to_disk(files_to_get)  # save to disk
             file_name = os.path.basename(file_path)
             tf.add(file_path, arcname=file_name)  # add to tar
 
