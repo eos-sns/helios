@@ -30,6 +30,8 @@ def get_output_file(file_name, extension, from_folder):
 class MongoH5:
     """ .h5 saved in MongoDB """
 
+    OPTIONAL_DATASET = ['co-eval_k', 'co-eval_PS_z']
+
     def _get_out_folder(self):
         out_folder = self.config["folder"]  # root folder out
         return get_random_folder(out_folder)
@@ -55,11 +57,9 @@ class MongoH5:
         shutil.copy(h5_file, file_out)
 
         with h5py.File(file_out, 'w') as editor:
-            if 'co-eval_k' not in files_to_get:
-                del editor['co-eval_k']  # remove dataset
-
-            if 'co-eval_PS_z' not in files_to_get:
-                del editor['co-eval_PS_z']
+            for key in self.OPTIONAL_DATASET:
+                if key not in files_to_get and key in editor:
+                    del editor[key]  # remove dataset
 
         return file_out
 
