@@ -22,12 +22,25 @@ class MongoQuery:
         raw = self.driver.find(self.params)
         return list(raw)
 
+    def _count_results(self):
+        if not self.driver:
+            raise ValueError(self.CANNOT_USE_DRIVER_FORMAT)
+
+        raw = self.driver.find(self.params).count()
+        return int(raw)
+
     def execute(self, driver=None):
         if driver:
             self.set_driver(driver)
 
         raw = self._get_results()
         return MongoResults(raw)
+
+    def count(self, driver=None):
+        if driver:
+            self.set_driver(driver)
+
+        return self._count_results()
 
 
 class MongoQueryBuilder:
