@@ -11,6 +11,27 @@
 Reads and searches EOS database.
 
 
+## Example
+```python
+helios = Helios()
+query = helios.builder() \
+    .with_p0_as(MongoFilters.LESS_THAN, 11) \
+    .with_p1_as(MongoFilters.GREATER_THAN, 1) \
+    .build()
+results = query.execute()
+print(results)  # mmmh, not exaclty what I wanted, let's refine
+
+results = results \
+    .filter_by({'p0': {'>=': 2}}) \
+    .filter_by('p0 > 1 and p2 <= 9')
+print(results)  # yess, now let's save and download
+
+results = results.get()  # get raw
+disk_path = helios.save_to_disk(results)  # saved in home folder
+download_url = helios.download(results)  # now let's download
+```
+
+
 ## Install
 ```bash
 $ pip install .
