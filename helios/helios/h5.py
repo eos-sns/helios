@@ -3,7 +3,6 @@
 """ Interface to deal with .h5 files in EOS database """
 
 import os
-import shutil
 import tarfile
 
 import h5py
@@ -54,15 +53,15 @@ class MongoH5:
     def save_to_disk(self, files_to_get):
         h5_file = self._get_path()
         file_out = self._get_output_file()
-        shutil.copy(h5_file, file_out)
 
-        with h5py.File(file_out, 'w') as editor:
-            for key in self.OPTIONAL_DATASET:
-                if key not in files_to_get:
-                    try:
-                        del editor[key]  # remove dataset
-                    except:
-                        pass
+        fd = h5py.File(file_out, 'w')
+        with h5py.File(h5_file, 'r') as reader:
+            for a in reader.attrs:
+                fd.attrs[a] = reader.attrs[a]
+            for d in reader:
+                if d in files_to_get:
+                    reader.copy(d, fd)
+        fd.close()
 
         return file_out
 
