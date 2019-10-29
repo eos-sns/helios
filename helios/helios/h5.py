@@ -29,8 +29,6 @@ def get_output_file(file_name, extension, from_folder):
 class MongoH5:
     """ .h5 saved in MongoDB """
 
-    OPTIONAL_DATASET = ['co-eval_k', 'co-eval_PS_z']
-
     def _get_out_folder(self):
         out_folder = self.config["folder"]  # root folder out
         return get_random_folder(out_folder)
